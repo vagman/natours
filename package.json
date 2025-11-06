@@ -34,8 +34,8 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^8.3.0",
-    "axios": "^1.13.1",
+    "@stripe/stripe-js": "^8.2.0",
+    "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "core-js": "^3.46.0",
@@ -64,7 +64,7 @@
     "xss": "^1.0.15"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.0",
+    "@eslint/js": "^9.39.1",
     "@prettier/plugin-pug": "^3.4.2",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.0",
