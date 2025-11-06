@@ -85,7 +85,6 @@ const sendErrorProd = (error, request, response) => {
 };
 
 const globalErrorHandler = (error, request, response, next) => {
-  // console.log(error.stack);
   (response.status(error.statusCode || 500),
     (error.status = error.status || 'error'));
 

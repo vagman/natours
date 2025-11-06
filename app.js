@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
+import compression from 'compression';
 
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -124,10 +125,12 @@ app.use(
   }),
 );
 
+// Compress all responses sent to clients
+app.use(compression());
+
 // Test middleware
 app.use((request, response, next) => {
   request.requestTime = new Date().toISOString();
-  // console.log(request.cookies);
   next();
 });
 

@@ -53,7 +53,6 @@ const signup = catchAsync(async (request, response, next) => {
   // 2. Use request to get the host (domain name) e.g. natours.com
   // 3. Create the URL for the welcome email by adding the path to the user's profile /me
   const url = `${request.protocol}://${request.get('host')}/me`;
-  console.log(url);
   await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, response);
@@ -118,8 +117,8 @@ const protect = catchAsync(async (request, response, next) => {
 
   // 4) Check if user changed password after the token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
-    console.log('JWT issued at:', decoded.iat);
-    console.log('Password changed at:', currentUser.passwordChangedAt);
+    // console.log('JWT issued at:', decoded.iat);
+    // console.log('Password changed at:', currentUser.passwordChangedAt);
     return next(
       new AppError('User recently changed password! Please log in again.', 401),
     );

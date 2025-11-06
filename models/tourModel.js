@@ -140,30 +140,6 @@ tourSchema.pre('save', function (next) {
   next();
 });
 
-// tourSchema.pre('save', async function (next) {
-//   const guidesPromises = this.guides.map(
-//     async userId => await User.findById(userId),
-//   );
-//   this.guides = await Promise.all(guidesPromises);
-//   next();
-// });
-
-// tourSchema.pre('save', function (next) {
-//   console.log('Will save document...');
-//   next();
-// });
-
-// tourSchema.post('save', function (doc, next) {
-//   console.log(doc);
-//   next();
-// });
-
-// ----------- QUERY MIDDLEWARE -------------
-// tourSchema.pre('findOne', function (next) {
-//   this.find({ secretTour: { $ne: true } });
-//   next();
-// });
-
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
 
@@ -181,16 +157,8 @@ tourSchema.pre(/^find/, function (next) {
 });
 
 tourSchema.post(/^find/, function (docs, next) {
-  console.log(`Query took ${Date.now() - this.start} milliseconds!`);
   next();
 });
-
-// Aggregation middleware - remove secret tours from the results
-// tourSchema.pre('aggregate', function (next) {
-//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-//   console.log(this.pipeline());
-//   next();
-// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 export default Tour;
