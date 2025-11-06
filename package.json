@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.2.0",
-    "axios": "^1.13.1",
+    "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "core-js": "^3.46.0",
