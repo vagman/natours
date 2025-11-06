@@ -1,0 +1,46 @@
+/* Leaflet Map Styling */
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 97%;
+  width: 100%;
+}
+
+/* Leaflet popup styling */
+.leaflet-popup-content {
+  font-size: 16px !important;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #333;
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+}
+
+.leaflet-popup-content p {
+  margin: 8px 0 !important;
+  font-size: 16px !important;
+}
+
+/* Custom popup styling */
+.leaflet-popup-content-wrapper {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  padding: 5px 10px !important;
+  font-size: 11px !important;
+  margin-bottom: 5px !important;
+  border-radius: 3px;
+}
+
+.marker {
+  background-image: url('../img/leaflet-images/pin.png');
+  background-size: cover;
+  width: 32px;
+  height: 40px;
+  cursor: pointer;
+}
