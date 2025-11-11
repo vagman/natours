@@ -6,10 +6,13 @@ import {
   getLoginForm,
   getAccount,
   updateUserData,
+  alerts,
 } from '../controllers/viewsController.js';
 import { protect, isLoggedIn } from '../controllers/authController.js';
 
 const router = express.Router();
+
+router.use(alerts);
 
 router.get('/', isLoggedIn, getOverview);
 router.get('/tour/:slug', isLoggedIn, getTour);

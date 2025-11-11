@@ -27,7 +27,9 @@ const getCheckoutSession = catchAsync(async (request, response, next) => {
           product_data: {
             name: `${tour.name} Tour`,
             description: tour.summary,
-            images: [`https://www.natours.dev/img/tours/${tour.imageCover}`],
+            images: [
+              `${request.protocol}://${request.get('host')}/img/tours/6${tour.imageCover}`,
+            ],
           },
         },
         quantity: 1,
@@ -35,7 +37,7 @@ const getCheckoutSession = catchAsync(async (request, response, next) => {
     ],
     mode: 'payment',
     // Redirect to homepage if successful - NOT SECURE - everyone can make bookings without paying!
-    success_url: `${request.protocol}://${request.get('host')}/?tour=${request.params.tourId}&user=${request.user.id}&price=${tour.price}`,
+    success_url: `${request.protocol}://${request.get('host')}/?tours?alert=booking`,
     // Redirect to the tour page if they cancel
     cancel_url: `${request.protocol}://${request.get('host')}/tour/${tour.slug}`,
   });
