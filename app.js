@@ -137,18 +137,8 @@ app.use((request, response, next) => {
   next();
 });
 
-// Enable CORS (adjust allowed origins as needed)
-app.use(
-  cors({
-    origin: [
-      'http://localhost:3000',
-      'http://127.0.0.1:5500',
-      'http://localhost:5500',
-      'https://natours-xd6l.onrender.com',
-    ],
-    credentials: true,
-  }),
-);
+// Implement CORS
+app.use(cors());
 
 // ------------- 3) Routes -------------
 app.use('/', viewRouter);
