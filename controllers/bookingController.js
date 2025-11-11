@@ -37,7 +37,7 @@ const getCheckoutSession = catchAsync(async (request, response, next) => {
     ],
     mode: 'payment',
     // Redirect to homepage if successful - NOT SECURE - everyone can make bookings without paying!
-    success_url: `${request.protocol}://${request.get('host')}/?tours?alert=booking`,
+    success_url: `${request.protocol}://${request.get('host')}/my-tours?alert=booking`,
     // Redirect to the tour page if they cancel
     cancel_url: `${request.protocol}://${request.get('host')}/tour/${tour.slug}`,
   });
