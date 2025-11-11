@@ -7,6 +7,7 @@ import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
+import cors from 'cors';
 
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -40,11 +41,10 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      // <-- include the explicit API origin here
       connectSrc: [
         "'self'",
         'https://api.stripe.com',
-        'https://natours-xd6l.onrender.com' // correct: origin only (optional because of 'self')
+        'https://natours-xd6l.onrender.com'
       ],
       scriptSrc: ["'self'", 'https://js.stripe.com'],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com/'],
@@ -60,14 +60,12 @@ app.use(
         'https://c.tile.openstreetmap.org',
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
-      // FIX: allow Stripe iframes created by Stripe.js
       frameSrc: [
         "'self'",
         'https://js.stripe.com',
         'https://hooks.stripe.com',
         'https://checkout.stripe.com',
       ],
-      // childSrc for older browsers (fallback for frameSrc)
       childSrc: [
         "'self'",
         'https://js.stripe.com',
@@ -138,6 +136,20 @@ app.use((request, response, next) => {
   request.requestTime = new Date().toISOString();
   next();
 });
+
+// Enable CORS (adjust allowed origins as needed)
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'http://127.0.0.1:5500',
+      'http://localhost:5500',
+      'https://natours-xd6l.onrender.com',
+    ],
+    credentials: true,
+  }),
+);
+app.options('*', cors());
 
 // ------------- 3) Routes -------------
 app.use('/', viewRouter);
