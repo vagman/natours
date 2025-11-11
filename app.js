@@ -40,7 +40,12 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      connectSrc: ["'self'", 'https://api.stripe.com'], // allow Stripe API calls
+      // <-- include the explicit API origin here
+      connectSrc: [
+        "'self'",
+        'https://api.stripe.com',
+        'https://natours-xd6l.onrender.com' // correct: origin only (optional because of 'self')
+      ],
       scriptSrc: ["'self'", 'https://js.stripe.com'],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com/'],
       workerSrc: ["'self'", 'blob:'],
