@@ -62,7 +62,7 @@
     "regenerator-runtime": "^0.14.1",
     "sharp": "^0.34.4",
     "slugify": "^1.6.6",
-    "stripe": "^19.2.0",
+    "stripe": "^19.3.0",
     "validator": "^13.15.20",
     "xss": "^1.0.15"
   },
