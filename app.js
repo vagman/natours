@@ -44,7 +44,7 @@ app.use(
       connectSrc: [
         "'self'",
         'https://api.stripe.com',
-        'https://natours-xd6l.onrender.com'
+        'https://natours-xd6l.onrender.com',
       ],
       scriptSrc: ["'self'", 'https://js.stripe.com'],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com/'],
@@ -149,7 +149,6 @@ app.use(
     credentials: true,
   }),
 );
-app.options('*', cors());
 
 // ------------- 3) Routes -------------
 app.use('/', viewRouter);
