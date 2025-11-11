@@ -138,7 +138,8 @@ app.use((request, response, next) => {
 });
 
 // Implement CORS
-app.use(cors('*', cors()));
+app.use(cors());
+app.use('*', cors());
 
 // ------------- 3) Routes -------------
 app.use('/', viewRouter);
