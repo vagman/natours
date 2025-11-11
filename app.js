@@ -18,7 +18,7 @@ import tourRouter from './routes/tourRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
 import bookingRouter from './routes/bookingRoutes.js';
-import bookingController from './routes/bookingController.js';
+import bookingController from './controllers/bookingController.js';
 import viewRouter from './routes/viewRoutes.js';
 
 const app = express();
