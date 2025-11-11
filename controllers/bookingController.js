@@ -4,7 +4,6 @@ import Tour from '../models/tourModel.js';
 import Booking from '../models/bookingModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import * as factory from './handlerFactory.js';
-import Stripe from 'stripe';
 import User from '../models/userModel.js';
 
 const getCheckoutSession = catchAsync(async (request, response, next) => {
@@ -68,7 +67,7 @@ const createBookingCheckout = async session => {
 };
 
 const webhookCheckout = catchAsync(async (request, response, next) => {
-  signature = request.headers['stripe-signature'];
+  const signature = request.headers['stripe-signature'];
 
   let event;
   try {
