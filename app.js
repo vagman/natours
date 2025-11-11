@@ -89,14 +89,13 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 app.post(
-  'https://natours-xd6l.onrender.com/webhook-checkout',
-  express.bodyParser.raw({ type: 'application/json' }),
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
   webhookCheckout,
 );
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
-app.use(express.raw({ type: 'application/json' }));
 app.use(cookieParser());
 
 // Set query parser AFTER body parser
