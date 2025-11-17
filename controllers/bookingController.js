@@ -4,6 +4,7 @@ import Tour from '../models/tourModel.js';
 import Booking from '../models/bookingModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import * as factory from './handlerFactory.js';
+import User from '../models/userModel.js';
 
 const getCheckoutSession = catchAsync(async (request, response, next) => {
   // 0. Get thecurrently booked tour
@@ -26,7 +27,9 @@ const getCheckoutSession = catchAsync(async (request, response, next) => {
           product_data: {
             name: `${tour.name} Tour`,
             description: tour.summary,
-            images: [`https://www.natours.dev/img/tours/${tour.imageCover}`],
+            images: [
+              `${request.protocol}://${request.get('host')}/img/tours/6${tour.imageCover}`,
+            ],
           },
         },
         quantity: 1,
@@ -34,7 +37,7 @@ const getCheckoutSession = catchAsync(async (request, response, next) => {
     ],
     mode: 'payment',
     // Redirect to homepage if successful - NOT SECURE - everyone can make bookings without paying!
-    success_url: `${request.protocol}://${request.get('host')}/?tour=${request.params.tourId}&user=${request.user.id}&price=${tour.price}`,
+    success_url: `${request.protocol}://${request.get('host')}/my-tours?alert=booking`,
     // Redirect to the tour page if they cancel
     cancel_url: `${request.protocol}://${request.get('host')}/tour/${tour.slug}`,
   });
@@ -46,16 +49,45 @@ const getCheckoutSession = catchAsync(async (request, response, next) => {
   });
 });
 
-const createBookingCheckout = catchAsync(async (request, response, next) => {
-  // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
-  const { tour, user, price } = request.query;
+// const createBookingCheckout = catchAsync(async (request, response, next) => {
+//   // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
+//   const { tour, user, price } = request.query;
 
-  // If there is no query, move to the next middleware
-  if (!tour || !user || !price) return next();
+//   // If there is no query, move to the next middleware
+//   if (!tour || !user || !price) return next();
+//   await Booking.create({ tour, user, price });
+
+//   // Redirect to the original URL without the query string
+//   response.redirect(request.originalUrl.split('?')[0]);
+// });
+
+const createBookingCheckout = async session => {
+  const tour = session.client_reference_id;
+  const user = (await User.findOne({ email: session.customer_email })).id;
+  const price = session.amount_total / 100;
   await Booking.create({ tour, user, price });
+};
 
-  // Redirect to the original URL without the query string
-  response.redirect(request.originalUrl.split('?')[0]);
+const webhookCheckout = catchAsync(async (request, response, next) => {
+  const signature = request.headers['stripe-signature'];
+
+  let event;
+  try {
+    event = Stripe.webhooks.constructEvent(
+      request.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (error) {
+    return response.status(400).send(`Webhook error: ${error.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    await createBookingCheckout(session);
+  }
+
+  response.status(200).json({ received: true });
 });
 
 const createBooking = factory.createOne(Booking);
@@ -72,4 +104,5 @@ export {
   deleteBooking,
   getBooking,
   getAllBookings,
+  webhookCheckout,
 };

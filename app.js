@@ -7,6 +7,7 @@ import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
+import cors from 'cors';
 
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -17,6 +18,7 @@ import tourRouter from './routes/tourRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
 import bookingRouter from './routes/bookingRoutes.js';
+import { webhookCheckout } from './controllers/bookingController.js';
 import viewRouter from './routes/viewRoutes.js';
 
 const app = express();
@@ -40,7 +42,11 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      connectSrc: ["'self'", 'https://api.stripe.com'], // allow Stripe API calls
+      connectSrc: [
+        "'self'",
+        'https://api.stripe.com',
+        'https://natours-xd6l.onrender.com',
+      ],
       scriptSrc: ["'self'", 'https://js.stripe.com'],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com/'],
       workerSrc: ["'self'", 'blob:'],
@@ -55,14 +61,12 @@ app.use(
         'https://c.tile.openstreetmap.org',
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
-      // FIX: allow Stripe iframes created by Stripe.js
       frameSrc: [
         "'self'",
         'https://js.stripe.com',
         'https://hooks.stripe.com',
         'https://checkout.stripe.com',
       ],
-      // childSrc for older browsers (fallback for frameSrc)
       childSrc: [
         "'self'",
         'https://js.stripe.com',
@@ -84,9 +88,14 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  webhookCheckout,
+);
+
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // Set query parser AFTER body parser
@@ -133,6 +142,8 @@ app.use((request, response, next) => {
   request.requestTime = new Date().toISOString();
   next();
 });
+
+app.use(cors());
 
 // ------------- 3) Routes -------------
 app.use('/', viewRouter);

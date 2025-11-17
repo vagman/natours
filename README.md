@@ -2,6 +2,10 @@
 
 A production-grade Node.js/Express REST API for a fictional tour booking platform. It covers real-world features like authentication, authorization, file uploads, image processing, geospatial queries, security hardening, and (optionally) Stripe payments.
 
+<img width="800" height="800" alt="image" src="https://github.com/user-attachments/assets/c6d29ec2-d7d3-45bd-ba65-9df274719c6b" />
+
+
+
 ## Tech Stack
 - Node.js, Express
 - MongoDB, Mongoose
