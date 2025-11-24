@@ -35,7 +35,7 @@
     "build:js": "esbuild ./public/js/index.js --bundle --outfile=./public/js/bundle.js"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^8.2.0",
+    "@stripe/stripe-js": "^8.5.2",
     "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "compression": "^1.8.1",
