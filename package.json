@@ -40,7 +40,7 @@
     "bcryptjs": "^3.0.3",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
-    "core-js": "^3.46.0",
+    "core-js": "^3.47.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "esbuild": "^0.27.0",
